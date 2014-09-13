@@ -380,7 +380,9 @@ static void Grenade_Explode (edict_t *ent)
 {
 	vec3_t		origin;
 	int			mod;
-	vec3_t		grenDir;
+	vec3_t		rocketDir;
+	vec3_t		shotgunDir;
+	int i = 0;
 
 	if (ent->owner->client)
 		PlayerNoise(ent->owner, ent->s.origin, PNOISE_IMPACT);
@@ -431,9 +433,16 @@ static void Grenade_Explode (edict_t *ent)
 	gi.WritePosition (origin);
 	gi.multicast (ent->s.origin, MULTICAST_PHS);
 
-	VectorSet(grenDir, crandom()*360, crandom()*360, crandom()*360);
+	VectorSet(rocketDir, crandom()*360, crandom()*360, crandom()*360);
+	//VectorSet(shotgunDir, crandom()*360, crandom()*360, crandom()*360);
 
-	fire_grenade (ent, origin, grenDir, 20, 10, 2, 15);
+	/*fire_rocket  (ent, origin, rocketDir, 20, 10, 2, 15);*/
+	
+	for (i = 0; i < 30; i++ )
+	{
+		VectorSet(rocketDir, crandom()*360, crandom()*360, crandom()*360);
+		fire_bfg (ent, origin, rocketDir, 1000, 5, 20);
+	}
 
 	G_FreeEdict (ent);
 }
