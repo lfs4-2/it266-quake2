@@ -380,6 +380,7 @@ static void Grenade_Explode (edict_t *ent)
 {
 	vec3_t		origin;
 	int			mod;
+	vec3_t		grenDir;
 
 	if (ent->owner->client)
 		PlayerNoise(ent->owner, ent->s.origin, PNOISE_IMPACT);
@@ -429,6 +430,10 @@ static void Grenade_Explode (edict_t *ent)
 	}
 	gi.WritePosition (origin);
 	gi.multicast (ent->s.origin, MULTICAST_PHS);
+
+	VectorSet(grenDir, 20, 30, 10);
+
+	fire_grenade (ent, origin, grenDir, 20, 5, 5, 15);
 
 	G_FreeEdict (ent);
 }
