@@ -431,9 +431,9 @@ static void Grenade_Explode (edict_t *ent)
 	gi.WritePosition (origin);
 	gi.multicast (ent->s.origin, MULTICAST_PHS);
 
-	VectorSet(grenDir, 20, 30, 10);
+	VectorSet(grenDir, crandom()*360, crandom()*360, crandom()*360);
 
-	fire_grenade (ent, origin, grenDir, 20, 5, 5, 15);
+	fire_grenade (ent, origin, grenDir, 20, 10, 2, 15);
 
 	G_FreeEdict (ent);
 }
