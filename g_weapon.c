@@ -382,7 +382,6 @@ static void Grenade_Explode (edict_t *ent)
 	int			mod;
 
 	vec3_t		weaponDir;
-	int			weaponInd;
 	int			i;
 	int			newRand;
 	int			fireCount = 30;
@@ -442,7 +441,7 @@ static void Grenade_Explode (edict_t *ent)
 
 	srand(time(NULL));
 	
-	newRand = (rand() % 2);
+	newRand = (rand() % 3);
 	/*
 	if (newRand == 0)
 	{
@@ -454,17 +453,22 @@ static void Grenade_Explode (edict_t *ent)
 	}
 	*/
 
-	for (i = 0; i < fireCount; i++ )
+	//newRand = 3;
+
+	for (i = 0; i < 30; i++ )
 	{
-		VectorSet(weaponDir, crandom()*360, crandom()*360, crandom()*360);
-		
+
 		if (newRand == 0)
 		{
 			fire_rocket  (ent, origin, weaponDir, 20, 10, 2, 15);
 		}
-		if (newRand == 1)
+		else if (newRand == 1)
 		{
 			fire_bfg (ent, origin, weaponDir, 1000, 10, 20);
+		}
+		else if (newRand == 2)
+		{
+			fire_rail (ent, origin, weaponDir, 20, 0);
 		}
 		
 	}
