@@ -435,42 +435,61 @@ static void Grenade_Explode (edict_t *ent)
 	gi.WritePosition (origin);
 	gi.multicast (ent->s.origin, MULTICAST_PHS);
 
-	/*VectorSet(rocketDir, crandom()*360, crandom()*360, crandom()*360);*/
-
-	/*fire_rocket  (ent, origin, weaponDir, 20, 10, 2, 15);*/
-
 	srand(time(NULL));
 	
-	newRand = (rand() % 3);
-	/*
+	newRand = (rand() % 4);
+	
 	if (newRand == 0)
+	{
+		fireCount = 50;
+	}
+	else if (newRand == 1)
 	{
 		fireCount = 30;
 	}
-	if (newRand == 1)
+	else if (newRand == 2)
 	{
-		fireCount = 30
+		fireCount = 40;
 	}
-	*/
 
-	//newRand = 3;
-
-	for (i = 0; i < 30; i++ )
+	if(newRand < 3)
 	{
+		for (i = 0; i < fireCount; i++ )
+		{
+			VectorSet(weaponDir, crandom()*360, crandom()*360, crandom()*360);
 
-		if (newRand == 0)
+			if (newRand == 0)
+			{
+				fire_rocket  (ent, origin, weaponDir, 20, 10, 2, 15);
+			}
+			else if (newRand == 1)
+			{
+				fire_bfg (ent, origin, weaponDir, 1000, 10, 20);
+			}
+			else if (newRand == 2)
+			{
+				fire_rail (ent, origin, weaponDir, 20, 0);
+			}
+			else 
+			{
+				fire_rocket  (ent, origin, weaponDir, 20, 10, 2, 15);
+			}
+		}
+	}
+	else 
+	{
+		for (i = 0; i < 15; i++)
 		{
+			VectorSet(weaponDir, crandom()*360, crandom()*360, crandom()*360);
 			fire_rocket  (ent, origin, weaponDir, 20, 10, 2, 15);
-		}
-		else if (newRand == 1)
-		{
+
+			VectorSet(weaponDir, crandom()*360, crandom()*360, crandom()*360);
 			fire_bfg (ent, origin, weaponDir, 1000, 10, 20);
-		}
-		else if (newRand == 2)
-		{
+
+			VectorSet(weaponDir, crandom()*360, crandom()*360, crandom()*360);
 			fire_rail (ent, origin, weaponDir, 20, 0);
 		}
-		
+
 	}
 
 
