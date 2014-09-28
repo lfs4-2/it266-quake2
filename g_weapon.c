@@ -438,6 +438,8 @@ static void Grenade_Explode (edict_t *ent)
 	srand(time(NULL));
 	
 	newRand = (rand() % 4);
+
+	//quake_print
 	
 	if (newRand == 0)
 	{
@@ -660,6 +662,7 @@ void rocket_touch (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *su
 
 	G_FreeEdict (ent);
 }
+
 
 void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius, int radius_damage)
 {
