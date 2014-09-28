@@ -4,6 +4,7 @@
 #include "m_player.h"
 
 
+
 static qboolean	is_quad;
 static byte		is_silenced;
 
@@ -1411,5 +1412,5 @@ void Weapon_BFG (edict_t *ent)
 	Weapon_Generic (ent, 8, 32, 55, 58, pause_frames, fire_frames, weapon_bfg_fire);
 }
 
-
+#include "g_meleewps.h"
 //======================================================================
