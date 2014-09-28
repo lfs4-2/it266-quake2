@@ -5,7 +5,7 @@
 #define SWORD_KICK 500
 #define SWORD_RANGE 35
 
-
+//created file 
 
 void fire_sword ( edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick)
 {    
