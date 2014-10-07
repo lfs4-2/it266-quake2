@@ -88,6 +88,8 @@ The normal starting point for a level.
 */
 void SP_info_player_start(edict_t *self)
 {
+	//edict_t *merchant;
+
 	if (!coop->value)
 		return;
 	if(Q_stricmp(level.mapname, "security") == 0)
@@ -96,6 +98,14 @@ void SP_info_player_start(edict_t *self)
 		self->think = SP_CreateCoopSpots;
 		self->nextthink = level.time + FRAMETIME;
 	}
+	/*
+	VectorCopy(self->s.origin, merchant->s.origin);
+	merchant->s.origin[0]+=10;
+
+	SP_misc_eastertank (merchant);
+	gi.linkentity(merchant);
+	*/
+	//gi.centerprintf(self, "Hello from the player start.");
 }
 
 /*QUAKED info_player_deathmatch (1 0 1) (-16 -16 -24) (16 16 32)
@@ -593,6 +603,9 @@ void InitClientPersistant (gclient_t *client)
 
 	item = FindItem("Sword");
 	client->pers.inventory[ITEM_INDEX(item)] = 1;
+	
+	item = FindItem("Axe");
+	client->pers.inventory[ITEM_INDEX(item)] = 1;
 
 	item = FindItem("Blaster");
 	client->pers.selected_item = ITEM_INDEX(item);
@@ -611,6 +624,7 @@ void InitClientPersistant (gclient_t *client)
 	client->pers.max_slugs		= 50;
 
 	client->pers.connected = true;
+
 }
 
 
@@ -1734,6 +1748,12 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		other = g_edicts + i;
 		if (other->inuse && other->client->chase_target == ent)
 			UpdateChaseCam(other);
+	}
+
+	if(client->think_delay <= 0)
+	{
+		client->think_delay = 60;
+		//think stuff
 	}
 }
 

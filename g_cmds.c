@@ -76,6 +76,11 @@ void SelectNextItem (edict_t *ent, int itflags)
 	cl->pers.selected_item = -1;
 }
 
+void CMD_Print_Position(edict_t *ent)
+{
+	
+}
+
 void SelectPrevItem (edict_t *ent, int itflags)
 {
 	gclient_t	*cl;
@@ -404,7 +409,7 @@ void Cmd_Use_f (edict_t *ent)
 		if(!Q_stricmp(s, "Blaster")){
 			it = FindItem("Sword");
 		} else if(!Q_stricmp(s, "Shotgun")){
-			it = FindItem("SuperShotgun");
+			it = FindItem("Axe");
 		}
 	}
 

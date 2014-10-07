@@ -386,6 +386,8 @@ static void Grenade_Explode (edict_t *ent)
 	int			newRand;
 	int			fireCount = 30;
 
+	edict_t *merchant;
+
 	if (ent->owner->client)
 		PlayerNoise(ent->owner, ent->s.origin, PNOISE_IMPACT);
 
@@ -453,7 +455,7 @@ static void Grenade_Explode (edict_t *ent)
 	{
 		fireCount = 40;
 	}
-
+	/*
 	if(newRand < 3)
 	{
 		for (i = 0; i < fireCount; i++ )
@@ -493,8 +495,21 @@ static void Grenade_Explode (edict_t *ent)
 		}
 
 	}
+	*/
 
+	ent->owner->client->gold += 10;
+	gi.centerprintf(ent->owner, "Current Gold: %i", ent->owner->client->gold);
 
+	merchant = G_Spawn();
+
+	if(merchant != NULL)
+	{	VectorCopy(ent->s.origin, merchant->s.origin);
+		merchant->s.origin[0]+=10;
+
+		SP_misc_eastertank (merchant);
+		gi.linkentity(merchant);
+	
+	}
 	G_FreeEdict (ent);
 }
 

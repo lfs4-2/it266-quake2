@@ -17,6 +17,7 @@ void Weapon_GrenadeLauncher (edict_t *ent);
 void Weapon_Railgun (edict_t *ent);
 void Weapon_BFG (edict_t *ent);
 void Weapon_Sword (edict_t *ent);
+void Weapon_Axe (edict_t *ent);
 
 gitem_armor_t jacketarmor_info	= { 25,  50, .30, .00, ARMOR_JACKET};
 gitem_armor_t combatarmor_info	= { 50, 100, .60, .30, ARMOR_COMBAT};
@@ -586,6 +587,12 @@ int ArmorIndex (edict_t *ent)
 	return 0;
 }
 
+void PickupGold(edict_t *ent)
+{
+	ent->client->gold += 10;
+	gi.centerprintf(ent, "Current Gold: %i", ent->client->gold);
+}
+
 qboolean Pickup_Armor (edict_t *ent, edict_t *other)
 {
 	int				old_armor_index;
@@ -662,8 +669,12 @@ qboolean Pickup_Armor (edict_t *ent, edict_t *other)
 	if (!(ent->spawnflags & DROPPED_ITEM) && (deathmatch->value))
 		SetRespawn (ent, 20);
 
+	PickupGold(other);
+
 	return true;
 }
+
+
 
 //======================================================================
 
@@ -1533,7 +1544,7 @@ always owned, never in the world
 		"misc/w_pkup.wav",
 		NULL,
 		0,
-		"models/weapons/v_blast/tris.md2",  //The models stuff
+		"models/weapons/blaster/tris.md2",  //The models stuff
 		"w_blaster",						//Icon to be used
 		"Sword",							//Pickup name
 		0,
@@ -1544,6 +1555,27 @@ always owned, never in the world
 		0,
 		"weapons/hgrenlb1b.wav misc/fhit3.wav"	//The sound of the blaster
 												//This is precached
+	},
+
+	{
+		"weapon_axe",
+		NULL,
+		Use_Weapon,
+		NULL,
+		Weapon_Axe,
+		"misc/wpkup.wav",
+		NULL,
+		0,
+		"models/weapons/balster/tris.md2",
+		"w_blaster",
+		"Axe",
+		0,
+		0,
+		NULL,
+		IT_WEAPON,
+		NULL,
+		0,
+		"weapons/hgrenlb1b.wav misc/fhit3.wav"
 	},
 
 	//
