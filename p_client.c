@@ -615,10 +615,10 @@ void InitClientPersistant (gclient_t *client)
 	//client->pers.inventory[client->pers.selected_item] = 1;
 	client->pers.inventory[ITEM_INDEX(item)] = 3;
 
-	
+	/*
 	item = FindItem("Lance");
 	client->pers.inventory[ITEM_INDEX(item)] = 4;
-	
+	*/
 
 	client->pers.health			= 100;
 	client->pers.max_health		= 100;

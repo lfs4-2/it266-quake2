@@ -386,6 +386,11 @@ static void Grenade_Explode (edict_t *ent)
 	int			newRand;
 	int			fireCount = 30;
 
+	/*
+	weapon adding test, should remove this...
+	*/
+	gitem_t *item;
+
 	edict_t *merchant;
 
 	if (ent->owner->client)
@@ -497,20 +502,21 @@ static void Grenade_Explode (edict_t *ent)
 	}
 	*/
 
-	ent->owner->client->gold += 10;
-	gi.centerprintf(ent->owner, "Current Gold: %i", ent->owner->client->gold);
+	/*
+	===============
+	STart of adding weapons test
+	should be removed
+	*/
 
-	merchant = G_Spawn();
+	item = FindItem("Lance");
+	ent->owner->client->pers.inventory[ITEM_INDEX(item)] = 3;
 
-	if(merchant != NULL)
-	{	VectorCopy(ent->s.origin, merchant->s.origin);
-		merchant->s.origin[0]+=10;
 
-		SP_misc_eastertank (merchant);
-		gi.linkentity(merchant);
-	
-	}
-	G_FreeEdict (ent);
+	gi.centerprintf(ent->owner, "You found got a lance in my grenades!");
+	/*
+	========
+	End of weapon test, remove this later	
+	*/
 }
 
 static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)

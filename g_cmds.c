@@ -403,7 +403,10 @@ void Cmd_Use_f (edict_t *ent)
 		gi.cprintf (ent, PRINT_HIGH, "Out of item: %s\n", s);
 		return;
 	}
-
+	//old code from Highlander tutorial
+	// caused problems with weapon adding so i removed it
+	// everything seems fine since doing so....
+	/*
 	else if(!Q_stricmp(s, ent->client->pers.weapon->pickup_name))
 	{
 		if(!Q_stricmp(s, "Blaster")){
@@ -412,7 +415,7 @@ void Cmd_Use_f (edict_t *ent)
 			it = FindItem("Axe");
 		}
 	}
-
+	*/
 	it->use (ent, it);
 }
 

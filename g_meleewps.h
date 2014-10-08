@@ -1,6 +1,11 @@
 /*
 Sword Code taken from Sword of the Highlander tutorial.
+http://webadvisor.aupr.edu/noc/Othertutorials/qdevels/-%20Sword%20Of%20The%20Highlander%20Revisited%20%20.html
+
 Expanded up and abstracted to created multiple weapons
+
+Some comments are from tutorial
+
 */
 /*sword variable definitions*/
 
@@ -47,7 +52,6 @@ void fire_melee(edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick
         {            
             if (tr.ent->takedamage)            
             {
-                //This tells us to damage the thing that in our path...hehe
                 T_Damage (tr.ent, self, self, aimdir, tr.endpos, tr.plane.normal, damage, kick, 0,0);
                 gi.sound (self, CHAN_AUTO, gi.soundindex("misc/fhit3.wav") , 1, ATTN_NORM, 0); 
  
