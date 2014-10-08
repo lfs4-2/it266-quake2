@@ -49,7 +49,14 @@ void fire_melee(edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick
     if (!((tr.surface) && (tr.surface->flags & SURF_SKY)))    
     {
         if (tr.fraction < 1.0)        
-        {            
+        {   
+			/*
+				Merchant interaction test working!!
+			*/
+			if(strcmp(tr.ent->classname, "easter_tank"))
+			{
+				gi.centerprintf(self, "What are ya buyin");
+			}
             if (tr.ent->takedamage)            
             {
                 T_Damage (tr.ent, self, self, aimdir, tr.endpos, tr.plane.normal, damage, kick, 0,0);
@@ -224,7 +231,7 @@ void Weapon_Sword_Fire(edict_t *ent)
 	else
 		damage = SWORD_NORMAL_DAMAGE;
 	melee_attack (ent, vec3_origin, damage, kick, range);
-	gi.centerprintf(ent, "Sword attack");
+	//gi.centerprintf(ent, "Sword attack");
 	ent->client->ps.gunframe++;
 }
 
@@ -249,7 +256,7 @@ void Weapon_Axe_Fire(edict_t *ent)
 
 	melee_attack (ent, vec3_origin, damage, kick, range);
 	ent->client->ps.gunframe++;
-	gi.centerprintf(ent, "Axe attack");
+	//gi.centerprintf(ent, "Axe attack");
 }
 
 void Weapon_Axe(edict_t *ent)
@@ -272,7 +279,7 @@ void Weapon_Lance_Fire(edict_t *ent)
 
 	melee_attack (ent, vec3_origin, damage, kick ,range);
 	ent->client->ps.gunframe++;
-	gi.centerprintf(ent, "lance attack");
+	//gi.centerprintf(ent, "lance attack");
 }
 void Weapon_Lance(edict_t *ent)
 {

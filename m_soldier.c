@@ -1126,6 +1126,11 @@ void soldier_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int dama
 {
 	int		n;
 
+	/*
+	Test for death stuff
+
+	gi.centerprintf(inflictor, "You killed me dude");
+	*/
 // check for gib
 	if (self->health <= self->gib_health)
 	{
