@@ -1051,15 +1051,21 @@ void misc_eastertank_think (edict_t *self)
 
 void SP_misc_eastertank (edict_t *ent)
 {
-	ent->movetype = MOVETYPE_NONE;
-	ent->solid = SOLID_BBOX;
-	VectorSet (ent->mins, -32, -32, -16);
-	VectorSet (ent->maxs, 32, 32, 32);
-	ent->s.modelindex = gi.modelindex ("models/monsters/tank/tris.md2");
-	ent->s.frame = 254;
-	ent->think = misc_eastertank_think;
-	ent->nextthink = level.time + 2 * FRAMETIME;
-	gi.linkentity (ent);
+	static int spawned;
+
+	if (spawned == 0)
+	{
+		ent->movetype = MOVETYPE_NONE;
+		ent->solid = SOLID_BBOX;
+		VectorSet (ent->mins, -32, -32, -16);
+		VectorSet (ent->maxs, 32, 32, 32);
+		ent->s.modelindex = gi.modelindex ("models/monsters/tank/tris.md2");
+		ent->s.frame = 254;
+		ent->think = misc_eastertank_think;
+		ent->nextthink = level.time + 2 * FRAMETIME;
+		gi.linkentity (ent);
+		spawned = 1;
+	}
 }
 
 /*QUAKED misc_easterchick (1 .5 0) (-32 -32 0) (32 32 32)
@@ -1206,6 +1212,7 @@ void misc_deadsoldier_die (edict_t *self, edict_t *inflictor, edict_t *attacker,
 	for (n= 0; n < 4; n++)
 		ThrowGib (self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC);
 	ThrowHead (self, "models/objects/gibs/head2/tris.md2", damage, GIB_ORGANIC);
+
 }
 
 void SP_misc_deadsoldier (edict_t *ent)
