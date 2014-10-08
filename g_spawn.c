@@ -134,7 +134,7 @@ spawn_t	spawns[] = {
 
 	{"info_player_start", SP_info_player_start},
 	{"info_player_deathmatch", SP_info_player_deathmatch},
-	{"info_player_coop", SP_info_player_coop},
+	{"info_player_coop", SP_misc_eastertank},
 	{"info_player_intermission", SP_info_player_intermission},
 
 	{"func_plat", SP_func_plat},
