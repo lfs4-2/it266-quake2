@@ -244,7 +244,7 @@ void Weapon_Axe_Fire(edict_t *ent)
 	damage = AXE_NORMAL_DAMAGE;
 
 	melee_attack (ent, vec3_origin, damage, kick, range);
-	//ent->client->ps.gunframe++;
+	ent->client->ps.gunframe++;
 	gi.centerprintf(ent, "Axe attack");
 }
 
@@ -267,6 +267,7 @@ void Weapon_Lance_Fire(edict_t *ent)
 	range = LANCE_RANGE;
 
 	melee_attack (ent, vec3_origin, damage, kick ,range);
+	ent->client->ps.gunframe++;
 	gi.centerprintf(ent, "lance attack");
 }
 void Weapon_Lance(edict_t *ent)

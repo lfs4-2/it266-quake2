@@ -16,8 +16,12 @@ void Weapon_Grenade (edict_t *ent);
 void Weapon_GrenadeLauncher (edict_t *ent);
 void Weapon_Railgun (edict_t *ent);
 void Weapon_BFG (edict_t *ent);
+/*
+Custom Melee Weapons
+*/
 void Weapon_Sword (edict_t *ent);
 void Weapon_Axe (edict_t *ent);
+void Weapon_Lance(edict_t *ent);
 
 gitem_armor_t jacketarmor_info	= { 25,  50, .30, .00, ARMOR_JACKET};
 gitem_armor_t combatarmor_info	= { 50, 100, .60, .30, ARMOR_COMBAT};
@@ -1556,7 +1560,9 @@ always owned, never in the world
 		"weapons/hgrenlb1b.wav misc/fhit3.wav"	//The sound of the blaster
 												//This is precached
 	},
-
+	/*
+		axe. can be owned or purchased. Will never be in game
+	*/
 	{
 		"weapon_axe",
 		NULL,
@@ -1569,6 +1575,29 @@ always owned, never in the world
 		"models/weapons/balster/tris.md2",
 		"w_blaster",
 		"Axe",
+		0,
+		0,
+		NULL,
+		IT_WEAPON,
+		NULL,
+		0,
+		"weapons/hgrenlb1b.wav misc/fhit3.wav"
+	},
+	/*
+	Lance weapon 
+	*/
+	{
+		"weapon_lance",
+		NULL,
+		Use_Weapon,
+		NULL,
+		Weapon_Lance,
+		"misc/wpkup.wav",
+		NULL,
+		0,
+		"models/weapons/balster/tris.md2",
+		"w_blaster",
+		"Lance",
 		0,
 		0,
 		NULL,

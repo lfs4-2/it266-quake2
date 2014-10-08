@@ -600,18 +600,25 @@ void InitClientPersistant (gclient_t *client)
 	gitem_t		*item;
 
 	memset (&client->pers, 0, sizeof(client->pers));
-
+	
 	item = FindItem("Sword");
 	client->pers.inventory[ITEM_INDEX(item)] = 1;
-	
-	item = FindItem("Axe");
-	client->pers.inventory[ITEM_INDEX(item)] = 1;
-
-	item = FindItem("Blaster");
 	client->pers.selected_item = ITEM_INDEX(item);
-	client->pers.inventory[client->pers.selected_item] = 1;
 
 	client->pers.weapon = item;
+
+	item = FindItem("Axe");
+	client->pers.inventory[ITEM_INDEX(item)] = 2;
+	
+
+	item = FindItem("Blaster");
+	//client->pers.inventory[client->pers.selected_item] = 1;
+	client->pers.inventory[ITEM_INDEX(item)] = 3;
+
+	
+	item = FindItem("Lance");
+	client->pers.inventory[ITEM_INDEX(item)] = 4;
+	
 
 	client->pers.health			= 100;
 	client->pers.max_health		= 100;
@@ -633,6 +640,8 @@ void InitClientResp (gclient_t *client)
 	memset (&client->resp, 0, sizeof(client->resp));
 	client->resp.enterframe = level.framenum;
 	client->resp.coop_respawn = client->pers;
+
+	gi.centerprintf(client, "Hello from init");
 }
 
 /*
@@ -1119,6 +1128,7 @@ void PutClientInServer (edict_t *ent)
 		resp = client->resp;
 		memcpy (userinfo, client->pers.userinfo, sizeof(userinfo));
 		InitClientPersistant (client);
+
 		ClientUserinfoChanged (ent, userinfo);
 	}
 	else if (coop->value)
