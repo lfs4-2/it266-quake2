@@ -1125,13 +1125,31 @@ mmove_t soldier_move_death6 = {FRAME_death601, FRAME_death610, soldier_frames_de
 void soldier_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
 {
 	int		n;
+	/*
+	=========================
+	Gold Drops
+	*/
+	gitem_t *item = NULL;
+
+	edict_t	*gold;
+
+	gold = G_Spawn();
+
+	if(gold != NULL)
+	{	
+		VectorCopy(self->s.origin, gold->s.origin);
+		gold->s.origin[2] + 10;
+
+		SpawnItem(gold, FindItem("Armor Shard"));
+		
+		gi.linkentity(gold);
+	}
 
 	/*
-	Test for death stuff
-
-	gi.centerprintf(inflictor, "You killed me dude");
+	=================
+	End gold drop code
 	*/
-// check for gib
+
 	if (self->health <= self->gib_health)
 	{
 		gi.sound (self, CHAN_VOICE, gi.soundindex ("misc/udeath.wav"), 1, ATTN_NORM, 0);
