@@ -50,6 +50,12 @@ void SelectNextItem (edict_t *ent, int itflags)
 	int			i, index;
 	gitem_t		*it;
 
+	if(ent->client->menustorage.menu_active)
+	{
+		menuDown(ent);
+		return;
+	}
+
 	cl = ent->client;
 
 	if (cl->chase_target) {
@@ -86,6 +92,12 @@ void SelectPrevItem (edict_t *ent, int itflags)
 	gclient_t	*cl;
 	int			i, index;
 	gitem_t		*it;
+
+	if(ent->client->menustorage.menu_active)
+	{
+		menuUp(ent);
+		return;
+	}
 
 	cl = ent->client;
 
@@ -495,6 +507,12 @@ Cmd_InvUse_f
 void Cmd_InvUse_f (edict_t *ent)
 {
 	gitem_t		*it;
+
+	if(ent->client->menustorage.menu_active)
+	{
+		menuSelect(ent);
+		return;
+	}
 
 	ValidateSelectedItem (ent);
 
@@ -985,6 +1003,8 @@ void ClientCommand (edict_t *ent)
 		Cmd_Wave_f (ent);
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 		Cmd_PlayerList_f(ent);
+	else if(Q_stricmp (cmd, "menu") == 0)
+		Menu_test(ent);
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }
