@@ -16,6 +16,7 @@ void closeMenu (edict_t *ent);
 
 void MenuTest (edict_t *ent);
 
+void changeline(edict_t *ent,int linenum ,char *line,int option);
 typedef struct menuMsg_s
 {
 	char *msg;

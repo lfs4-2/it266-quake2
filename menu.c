@@ -1,5 +1,7 @@
 /*
 Code take from quake 2 menu tutorials
+http://webadvisor.aupr.edu/noc/Othertutorials/Skunkworks/Generic%20Menuing%20System.htm
+http://webadvisor.aupr.edu/noc/Othertutorials/Skunkworks/Menu%20Addon.htm
 */
 
 #include "g_local.h"
@@ -38,7 +40,7 @@ void clearMenu(edict_t *ent)
 
 void setMenuHandler (edict_t *ent, void (*optionSelected)(edict_t *ent, int option))
 {
-	ent->client->menustorage.optionSelected = optionSelected;
+	ent->client->menustorage.optionSelected=optionSelected;
 }
 
 void menuDown(edict_t *ent)
@@ -89,10 +91,19 @@ void menuSelect (edict_t *ent)
 	int i;
 
 
-	i = ent->client->menustorage.messages[ent->client->menustorage.currentLine].option;
+
+	ent->client->menustorage.optionSelected(ent, ent->client->menustorage.messages[ent->client->menustorage.currentLine].option);
+	
+
+
+
+	/*
+	Removed these lines according to the advanced menu tutorial
+	ent->client->menustorage.messages[ent->client->menustorage.currentLine].option;
 	closeMenu(ent);
 	ent->client->menustorage.optionSelected(ent, i);
 	ent->client->menustorage.optionSelected=NULL;
+	*/
 }
 
 void initMenu (edict_t *ent)
@@ -115,7 +126,7 @@ void showMenu (edict_t * ent)
 	char tmp[80], tmp2[80];
 
 
-	sprintf(finalMenu, "xv 32 yv 8 picn inventory");
+	sprintf (finalMenu, "xv 32 yv 8 picn inventory ");
 
 	j = 48; //y coordinate
 
@@ -149,6 +160,8 @@ void showMenu (edict_t * ent)
 
 void closeMenu (edict_t *ent)
 {
+	ent->client->menustorage.optionSelected = NULL;
+
 	clearMenu(ent);
 
 	ent->client->showscores = false;
@@ -157,37 +170,62 @@ void closeMenu (edict_t *ent)
 	ent->client->showinventory = false;
 }
 
+void ChangeLine (edict_t *ent, int lineNum, char *line, int option)
+{
+	if (lineNum > (ent->client->menustorage.numLines))
+		return;
+
+	sprintf(ent->client->menustorage.messages[lineNum].msg, "%-21s", line);
+	ent->client->menustorage.messages[lineNum].option = option;
+}
+
 void testMenuHandler (edict_t *ent, int option)
 {
+	char *line;
+
+	
+	gi.centerprintf(ent, "This is your option: %i", option);
+	
+	if(option == 1)
+		ent->health += 5;
+
 	switch(option)
 	{
-	case 1: 
-		gi.centerprintf(ent, "option1\n");
+	case 1:
+		ent->health += 5;
 		break;
-	case 2:
-		gi.centerprintf(ent, "option2\n");
+	case 2: 
+		ent->health -= 5;
 		break;
-	case 3: 
-		gi.centerprintf(ent, "option3\n");
+	case 3:
+		closeMenu(ent);
+		return;
 		break;
-	default:
-		gi.centerprintf(ent, "fuckup\n");
 	}
 }
 
 
 void Menu_test(edict_t *ent)
 {
+	char *line;
+
+
 	if(ent->client->showscores || ent->client->showinventory || ent->client->menustorage.menu_active)
 		return;
 
+	sprintf(line,"%d",ent->health);
+
 	clearMenu(ent);
-	addLineToMenu(ent, "option 1", 1);
-	addLineToMenu(ent, "option 2", 1);
-	addLineToMenu(ent, "misc text", 1);
-	addLineToMenu(ent, "option 3", 1);
+	addLineToMenu(ent, "This is a test menu", 0);
+	addLineToMenu(ent, "For adding health", 0);
+	
+	addLineToMenu(ent, "Health + 5", 1);
+	addLineToMenu(ent, line, 0);
+	addLineToMenu(ent, "Health - 5", 2);
+	addLineToMenu(ent, "Exit", 3);
+	
 	setMenuHandler (ent, testMenuHandler);
-	ent->client->menustorage.currentLine = 2;
+	ent->client->menustorage.currentLine = 3;
 	showMenu(ent);
 
 }
@@ -202,3 +240,4 @@ void clearAllMenus (edict_t *ent)
 		closeMenu(ent);
 	}
 }
+
