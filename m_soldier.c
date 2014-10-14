@@ -1129,7 +1129,6 @@ void soldier_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int dama
 	=========================
 	Gold Drops
 	*/
-	gitem_t *item = NULL;
 
 	edict_t	*gold;
 

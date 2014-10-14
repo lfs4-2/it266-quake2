@@ -530,6 +530,11 @@ static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurfa
 		return;
 	}
 
+	if(other->client)
+	{
+		other->client->gold =+ 10;
+		gi.centerprintf(other, "Current gold: %i", other->client->gold);
+	}
 	if (!other->takedamage)
 	{
 		if (ent->spawnflags & 1)
@@ -547,7 +552,7 @@ static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurfa
 	}
 
 	ent->enemy = other;
-	Grenade_Explode (ent);
+	//Grenade_Explode (ent);
 }
 
 void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius)
