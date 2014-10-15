@@ -610,7 +610,7 @@ void InitClientPersistant (gclient_t *client)
 
 	item = FindItem("Blaster");
 	//client->pers.inventory[client->pers.selected_item] = 1;
-	client->pers.inventory[ITEM_INDEX(item)] = 3;
+	client->pers.inventory[ITEM_INDEX(item)] = 10;
 
 	/*
 	item = FindItem("Lance");

@@ -179,7 +179,9 @@ qboolean testMenuHandler (edict_t *ent, int option)
 	int cantbuy;
 	
 
-	int prices[8] = {10, 20, 30, 35, 40 , 45, 60, 80};
+	int prices2[8] = {10, 20, 30, 35, 40 , 45, 60, 80};
+
+	int prices[8] = {0, 0, 0, 0, 0 , 0, 0, 0};
 
 	cantbuy = 1;
 
@@ -229,12 +231,58 @@ qboolean testMenuHandler (edict_t *ent, int option)
 		ent->client->pers.inventory[ITEM_INDEX(item)] = 5;
 		cantbuy = 0;
 	}
-	case 9:
-		closeMenu(ent);
-		cantbuy = 2;
-		break;
+	break;
+	case 5:
+	{
+		if(ent->client->gold >= prices[4])
+		{
+			ent->client->gold -= prices[4];
+			item = FindItem("Halberd");
+			ent->client->pers.inventory[ITEM_INDEX(item)] = 6;
+			cantbuy = 0;
+		}
 	}
-
+	break;
+	case 6:
+	{
+		if(ent->client->gold >= prices[5])
+		{
+			ent->client->gold -= prices[5];
+			item = FindItem("Rapier");
+			ent->client->pers.inventory[ITEM_INDEX(item)] = 7;
+			cantbuy = 0;
+		}
+	}
+	break;
+	case 7:
+	{
+		if(ent->client->gold >= prices[6])
+		{
+			ent->client->gold -= prices[6];
+			item = FindItem("MorningStar");
+			ent->client->pers.inventory[ITEM_INDEX(item)] = 8;
+			cantbuy = 0;
+		}
+	}
+	break;
+	case 8:
+	{
+		if(ent->client->gold >= prices[7])
+		{
+			ent->client->gold -= prices[7];
+			item = FindItem("BusterSword");
+			ent->client->pers.inventory[ITEM_INDEX(item)] = 9;
+			cantbuy = 0;
+		}
+	}
+	break;
+	case 9:
+	{
+			closeMenu(ent);
+			cantbuy = 2;
+			break;
+	}
+}
 	if(cantbuy == 1)
 	{
 		closeMenu(ent);
@@ -268,7 +316,11 @@ extern void Menu_test(edict_t *ent)
 	addLineToMenu(ent, "Buy Axe: 20g", 2);
 	addLineToMenu(ent, "Buy Lance: 30g", 3);
 	addLineToMenu(ent, "Buy Warhammer: 50g", 4);
-	addLineToMenu(ent, "Exit",5 );
+	addLineToMenu(ent, "Buy Halberd: 50g", 5);
+	addLineToMenu(ent, "Buy Rapier: 50g", 6);
+	addLineToMenu(ent, "Buy MorningStar: 60g", 7);
+	addLineToMenu(ent, "Buy BusterSword: 50g", 8);
+	addLineToMenu(ent, "Exit",9 );
 	
 	setMenuHandler (ent, testMenuHandler);
 	ent->client->menustorage.currentLine = 3;
