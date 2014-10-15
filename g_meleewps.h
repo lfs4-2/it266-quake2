@@ -2,16 +2,17 @@
 Sword Code taken from Sword of the Highlander tutorial.
 http://webadvisor.aupr.edu/noc/Othertutorials/qdevels/-%20Sword%20Of%20The%20Highlander%20Revisited%20%20.html
 
-Expanded up and abstracted to created multiple weapons
+Expanded upon and abstracted to created multiple weapons
 
 Some comments are from tutorial
+
 
 /*knife variable defs*/
 
 
 #define KNIFE_NORMAL_DAMAGE 4
 #define KNIFE_KICK 0
-#define KNIFE_RANGE 10 
+#define KNIFE_RANGE 100
 
 /*sword variable definitions*/
 
@@ -138,8 +139,33 @@ void melee_attack(edict_t *ent, vec3_t g_offset, int damage, int kick, int range
 	VectorScale (forward, -2, ent->client->kick_origin);
 	ent->client->kick_angles[0] = -1;
 
-	fire_melee (ent, start, forward, damage, kick,range);
+	fire_melee (ent, start, forward, damage, -100,range);
+
 }
+
+
+void fire_spell(edict_t *ent, vec3_t g_offset, int spell)
+{
+	vec3_t forward, right; 
+	vec3_t start;
+	vec3_t offset;
+
+	/*if(is_quad)
+		damage *= 4;*/
+	AngleVectors (ent->client->v_angle, forward, right, NULL);
+	VectorSet(offset, 24, 8, ent->viewheight-8);
+	VectorAdd (offset, g_offset, offset);
+	P_ProjectSource (ent->client, ent->s.origin, offset, forward, right, start);
+
+	VectorScale (forward, -2, ent->client->kick_origin);
+	ent->client->kick_angles[0] = -1;
+
+	fire_shotgun (ent, start, forward, 0, -100, 500, 500, DEFAULT_DEATHMATCH_SHOTGUN_COUNT, MOD_SHOTGUN);
+
+	//fire_bfg (ent, start, forward, 200, 400, 20);
+
+}
+
 
 /* abstracted weapon specific attack funcitons with generic melee weapon attack functons.
    this will allow weapons to be created by only added a new fire and base weapon functon
@@ -338,6 +364,19 @@ void Weapon_BusterSword(edict_t *ent)
 	static int	fire_frames[]	= {9, 17, 0};
 
 	Weapon_Generic (ent, 8, 32, 55, 58, pause_frames, fire_frames, Weapon_BusterSword_Fire);
+}
+
+void Weapon_SpellBook_Fire(edict_t *ent)
+{
+	fire_spell(ent, vec3_origin, 0);
+	ent->client->ps.gunframe++;
+}
+void Weapon_SpellBook(edict_t *ent)
+{
+	static int	pause_frames[]	= {34, 51, 59, 0};
+	static int	fire_frames[]	= {6, 0};
+
+	Weapon_Generic (ent, 5, 16, 59, 64, pause_frames, fire_frames, Weapon_SpellBook_Fire);
 }
 
 

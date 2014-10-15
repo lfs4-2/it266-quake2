@@ -1414,4 +1414,5 @@ void Weapon_BFG (edict_t *ent)
 }
 
 #include "g_meleewps.h"
+#include "g_spells.h"
 //======================================================================

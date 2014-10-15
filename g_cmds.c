@@ -136,6 +136,10 @@ void CMD_Interact (edict_t *ent)
 		
 }
 
+void CMD_Fire_Spell(edict_t *ent)
+{
+
+}
 
 void SelectPrevItem (edict_t *ent, int itflags)
 {
@@ -1055,6 +1059,8 @@ void ClientCommand (edict_t *ent)
 		Cmd_PlayerList_f(ent);
 	else if(Q_stricmp (cmd, "menu") == 0)
 		CMD_Interact(ent);
+	else if(Q_stricmp (cmd, "spell") == 0)
+		CMD_Fire_Spell(ent);
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }

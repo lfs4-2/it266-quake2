@@ -29,6 +29,8 @@ void Weapon_Rapier (edict_t *ent);
 void Weapon_MorningStar (edict_t *ent);
 void Weapon_BusterSword (edict_t *ent);
 
+void Weapon_SpellBook (edict_t *ent);
+
 gitem_armor_t jacketarmor_info	= { 25,  50, .30, .00, ARMOR_JACKET};
 gitem_armor_t combatarmor_info	= { 50, 100, .60, .30, ARMOR_COMBAT};
 gitem_armor_t bodyarmor_info	= {100, 200, .80, .60, ARMOR_BODY};
@@ -1749,6 +1751,29 @@ always owned, never in the world
 		"models/weapons/v_bfg/tris.md2",  //The models stuff
 		"w_blaster",						//Icon to be used
 		"BusterSword",							//Pickup name
+		0,									// count_width
+		0,									//quantity
+		NULL,
+		IT_WEAPON,
+		0,
+		NULL,
+		0,
+		"weapons/hgrenlb1b.wav misc/fhit3.wav"	//The sound of the blaster
+												//This is precached
+	},
+
+	{
+		"weapon_spellbook",
+		NULL, 
+		Use_Weapon,			//How to use
+		NULL,
+		Weapon_SpellBook,		//What the function is
+		"misc/w_pkup.wav",
+		NULL,
+		0,
+		"models/weapons/v_launch/tris.md2",  //The models stuff
+		"w_blaster",						//Icon to be used
+		"SpellBook",							//Pickup name
 		0,									// count_width
 		0,									//quantity
 		NULL,
