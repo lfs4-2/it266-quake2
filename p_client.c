@@ -601,15 +601,12 @@ void InitClientPersistant (gclient_t *client)
 
 	memset (&client->pers, 0, sizeof(client->pers));
 	
-	item = FindItem("Sword");
+	item = FindItem("Knife");
 	client->pers.inventory[ITEM_INDEX(item)] = 1;
 	client->pers.selected_item = ITEM_INDEX(item);
 
 	client->pers.weapon = item;
 
-	item = FindItem("Axe");
-	client->pers.inventory[ITEM_INDEX(item)] = 2;
-	
 
 	item = FindItem("Blaster");
 	//client->pers.inventory[client->pers.selected_item] = 1;
@@ -640,8 +637,6 @@ void InitClientResp (gclient_t *client)
 	memset (&client->resp, 0, sizeof(client->resp));
 	client->resp.enterframe = level.framenum;
 	client->resp.coop_respawn = client->pers;
-
-	gi.centerprintf(client, "Hello from init");
 }
 
 /*

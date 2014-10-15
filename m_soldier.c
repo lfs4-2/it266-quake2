@@ -1137,7 +1137,7 @@ void soldier_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int dama
 	if(gold != NULL)
 	{	
 		VectorCopy(self->s.origin, gold->s.origin);
-		gold->s.origin[2] + 10;
+		gold->s.origin[2] += 10;
 
 		SpawnItem(gold, FindItem("Armor Shard"));
 		

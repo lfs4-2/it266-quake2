@@ -2,9 +2,13 @@
 code borrowed from quake 2 tutorials
 */
 
+#define PRICE_AMOUNTS 2
+
+
+
 void addLineToMenu(edict_t *ent, char *line, int option);
 void clearMenu(edict_t *ent);
-void setMenuHandler(edict_t *ent, void (*optionSelected)(edict_t *ent, int option));
+void setMenuHandler(edict_t *ent, qboolean (*optionSelected)(edict_t *ent, int option));
 
 void menuUp(edict_t *ent);
 void menuDown (edict_t *ent);
@@ -16,7 +20,10 @@ void closeMenu (edict_t *ent);
 
 void MenuTest (edict_t *ent);
 
+void clearAllMenus (edict_t *ent);
+
 void changeline(edict_t *ent,int linenum ,char *line,int option);
+
 typedef struct menuMsg_s
 {
 	char *msg;
@@ -31,4 +38,5 @@ typedef struct menuSystem_s
 	menuMsg_t	messages[12];
 	int			currentLine;
 	int			numLines;
+	int			prices[PRICE_AMOUNTS];
 }menuSystem_t;

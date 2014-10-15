@@ -6,31 +6,80 @@ Expanded up and abstracted to created multiple weapons
 
 Some comments are from tutorial
 
-*/
+/*knife variable defs*/
+
+
+#define KNIFE_NORMAL_DAMAGE 4
+#define KNIFE_KICK 0
+#define KNIFE_RANGE 10 
+
 /*sword variable definitions*/
 
-#define SWORD_NORMAL_DAMAGE 100
-#define SWORD_DEATHMATCH_DAMAGE 150
-#define SWORD_KICK 20
-#define SWORD_RANGE 35
+#define SWORD_NORMAL_DAMAGE 6
+#define SWORD_KICK 10
+#define SWORD_DEATHMATCH_DAMAGE 200
+#define SWORD_RANGE 15
 
 /*
 Axe variable defs
 */
-#define AXE_NORMAL_DAMAGE 200
-#define AXE_KICK 200
-#define AXE_RANGE 35
+#define AXE_NORMAL_DAMAGE 8
+#define AXE_KICK 10
+#define AXE_RANGE 20
 
 /*
 Lance Variable defs
 */
 
-#define LANCE_NORMAL_DAMAGE 35
-#define LANCE_KICK 150
-#define LANCE_RANGE 125
+#define LANCE_NORMAL_DAMAGE 6
+#define LANCE_KICK 5
+#define LANCE_RANGE 40
 
-//created file 
+/*
+warhammer variables
+*/
+#define WHAMMER_NORMAL_DAMAGE 15
+#define WHAMMER_KICK 20
+#define WHAMMER_RANGE 25
 
+/*
+halberd 
+*/
+
+#define HALBERD_NORMAL_DAMAGE 10
+#define HALBERD_KICK 10
+#define HALBERD_RANGE 40
+
+
+/*
+rapier
+
+*/
+
+#define RAPIER_NORMAL_DAMAGE 10
+#define RAPIER_KICK 10
+#define RAPIER_RANGE 40
+
+/*
+morning star
+*/
+
+#define MSTAR_NORMAL_DAMAGE 25
+#define MSTAR_KICK 15
+#define MSTAR_RANGE 30
+
+/*
+BUSTER SWORD
+*/
+
+
+#define BSWORD_NORMAL_DAMAGE 200
+#define BSWORD_KICK 300
+#define BSWORD_RANGE 40
+
+
+
+//fire_melee (ent, start, forward, damage, kick,range);
 void fire_melee(edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick, int range)
 {
 	trace_t tr; //detect whats in front of you up to range "vec3_t end"
@@ -49,17 +98,7 @@ void fire_melee(edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick
     if (!((tr.surface) && (tr.surface->flags & SURF_SKY)))    
     {
         if (tr.fraction < 1.0)        
-        {   
-			/*
-				Merchant interaction test working!!
-			*/
-			if(strcmp(tr.ent->classname, "info_player_coop") == 0)
-			{
-				gi.centerprintf(self, "What are ya buyin");
-			}
-		
-
-			//gi.centerprintf(self, tr.ent->classname);
+        {  
 
             if (tr.ent->takedamage)            
             {
@@ -101,123 +140,6 @@ void melee_attack(edict_t *ent, vec3_t g_offset, int damage, int kick, int range
 
 	fire_melee (ent, start, forward, damage, kick,range);
 }
-/*void fire_sword ( edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick)
-{    
-    trace_t tr; //detect whats in front of you up to range "vec3_t end"
- 
-    vec3_t end;
- 
-    // Figure out what we hit, if anything:
- 
-    VectorMA (start, SWORD_RANGE, aimdir, end);  //calculates the range vector                      
- 
-    tr = gi.trace (self->s.origin, NULL, NULL, end, self, MASK_SHOT);
-                        // figuers out what in front of the player up till "end"
-    
-   // Figure out what to do about what we hit, if anything
- 
-    if (!((tr.surface) && (tr.surface->flags & SURF_SKY)))    
-    {
-        if (tr.fraction < 1.0)        
-        {            
-            if (tr.ent->takedamage)            
-            {
-                //This tells us to damage the thing that in our path...hehe
-                T_Damage (tr.ent, self, self, aimdir, tr.endpos, tr.plane.normal, damage, kick, 0,0);
-                gi.sound (self, CHAN_AUTO, gi.soundindex("misc/fhit3.wav") , 1, ATTN_NORM, 0); 
- 
-            }        
-            else        
-            {                
-                gi.WriteByte (svc_temp_entity);    
-                gi.WriteByte (TE_SPARKS);
-                gi.WritePosition (tr.endpos);    
-                gi.WriteDir (tr.plane.normal);
-                gi.multicast (tr.endpos, MULTICAST_PVS);
- 
-                gi.sound (self, CHAN_AUTO, gi.soundindex("weapons/grenlb1b.wav") , 1, ATTN_NORM, 0);
- 
-            }    
-        }
-    }
-	gi.centerprintf(self, "Sword Attack");
-    return;
-}  // 1-13-98 DanE
-*/
-/*
-void sword_attack(edict_t *ent, vec3_t g_offset, int damage)
-{
-	vec3_t forward, right; 
-	vec3_t start;
-	vec3_t offset;
-
-	AngleVectors (ent->client->v_angle, forward, right, NULL);
-	VectorSet(offset, 24, 8, ent->viewheight-8);
-	VectorAdd (offset, g_offset, offset);
-	P_ProjectSource (ent->client, ent->s.origin, offset, forward, right, start);
-
-	VectorScale (forward, -2, ent->client->kick_origin);
-	ent->client->kick_angles[0] = -1;
-
-	fire_sword (ent, start, forward, damage, SWORD_KICK);
-
-
-}
-*/
-
-/*
-void fire_axe(edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick)
-{
-	trace_t tr;
-
-	vec3_t end;
-
-	VectorMA(start, AXE_RANGE, aimdir, end);
-
-	tr = gi.trace(self->s.origin, NULL,NULL, end, self, MASK_SHOT);
-
-	if(!((tr.surface)&&(tr.surface->flags & SURF_SKY)))
-	{
-		if(tr.fraction <  1.0)
-		{
-			if(tr.ent->takedamage)
-			{
-				T_Damage(tr.ent, self, self, aimdir, tr.endpos, tr.plane.normal, damage, kick, 0, 0);
-				gi.sound(self, CHAN_AUTO, gi.soundindex("misc/fhit3.wav"), 1, ATTN_NORM, 0);
-			}
-			else
-			{
-				gi.WriteByte(svc_temp_entity);
-				gi.WriteByte(TE_SPARKS);
-				gi.WritePosition(tr.endpos);
-				gi.WriteDir(tr.plane.normal);
-				gi.multicast(tr.endpos, MULTICAST_PVS);
-
-				gi.sound (self, CHAN_AUTO, gi.soundindex("weapons/grenlb1b.wav"), 1, ATTN_NORM, 0 );
-			}
-		}
-	}
-	gi.centerprintf(self, "Axe Attack");
-	return;
-}
-
-void axe_attack(edict_t *ent, vec3_t g_offset, int damage)
-{
-	vec3_t forward, right;
-	vec3_t start;
-	vec3_t offset;
-
-	AngleVectors (ent->client->v_angle, forward, right, NULL);
-	VectorSet(offset, 24, 8, ent->viewheight-8);
-	VectorAdd (offset, g_offset, offset);
-	P_ProjectSource (ent->client, ent->s.origin, offset, forward, right, start);
-
-	VectorScale (forward, -2, ent->client->kick_origin);
-	ent->client->kick_angles[0] = -1;
-
-	fire_axe (ent, start, forward, damage, AXE_KICK);
-}
-*/
 
 /* abstracted weapon specific attack funcitons with generic melee weapon attack functons.
    this will allow weapons to be created by only added a new fire and base weapon functon
@@ -239,13 +161,34 @@ void Weapon_Sword_Fire(edict_t *ent)
 	ent->client->ps.gunframe++;
 }
 
+void Weapon_Knife_Fire(edict_t *ent)
+{
+	int damage;
+	int kick;
+	int range;
+
+	damage = KNIFE_NORMAL_DAMAGE;
+	kick = KNIFE_KICK;
+	range = KNIFE_RANGE;
+
+	melee_attack (ent, vec3_origin, damage, kick ,range);
+	ent->client->ps.gunframe++;
+	//gi.centerprintf(ent, "lance attack");
+}
+
+void Weapon_Knife(edict_t *ent)
+{
+	static int      pause_frames[]  = {19, 32, 0};
+	static int      fire_frames[]   = {5, 0};
+ 
+	Weapon_Generic (ent, 4, 8, 52, 55, pause_frames, fire_frames, Weapon_Knife_Fire);
+}
 void Weapon_Sword (edict_t *ent)
 {
-	static int		pause_frames[] = {19,32,0};
-	static int		fire_frames[] =  {5,0};
-
-
-	Weapon_Generic (ent, 4,8,52,55,pause_frames, fire_frames, Weapon_Sword_Fire);
+	static int      pause_frames[]  = {19, 32, 0};
+	static int      fire_frames[]   = {5, 0};
+ 
+	Weapon_Generic (ent, 4, 8, 52, 55, pause_frames, fire_frames, Weapon_Sword_Fire);
 }
 
 void Weapon_Axe_Fire(edict_t *ent)
@@ -265,10 +208,10 @@ void Weapon_Axe_Fire(edict_t *ent)
 
 void Weapon_Axe(edict_t *ent)
 {
-	static int		pause_frames[] = {19, 32, 0};
-	static int		fire_frames[] = {5,0};
+	static int	pause_frames[]	= {22, 28, 34, 0};
+	static int	fire_frames[]	= {8, 9, 0};
 
-	Weapon_Generic (ent, 4,8,52,55,pause_frames, fire_frames, Weapon_Axe_Fire);
+	Weapon_Generic (ent, 7, 18, 36, 39, pause_frames, fire_frames, Weapon_Axe_Fire);
 }
 
 void Weapon_Lance_Fire(edict_t *ent)
@@ -287,8 +230,115 @@ void Weapon_Lance_Fire(edict_t *ent)
 }
 void Weapon_Lance(edict_t *ent)
 {
-	static int		pause_frames[] = {19, 32, 0};
-	static int		fire_frames[] = {5,0};
+	static int	pause_frames[]	= {56, 0};
+	static int	fire_frames[]	= {4, 0};
 
-	Weapon_Generic (ent, 4,8,52,55,pause_frames, fire_frames, Weapon_Lance_Fire);
+	Weapon_Generic (ent, 3, 18, 56, 61, pause_frames, fire_frames, Weapon_Lance_Fire);
 }
+
+void Weapon_WarHammer_Fire(edict_t *ent)
+{
+	int damage;
+	int kick;
+	int range;
+
+	damage = WHAMMER_NORMAL_DAMAGE;
+	kick = WHAMMER_KICK;
+	range = WHAMMER_RANGE;
+
+	melee_attack (ent, vec3_origin, damage, kick ,range);
+	ent->client->ps.gunframe++;
+}
+void Weapon_WarHammer(edict_t *ent)
+{
+	static int	pause_frames[]	= {29, 42, 57, 0};
+	static int	fire_frames[]	= {7, 0};
+
+	Weapon_Generic (ent, 6, 17, 57, 61, pause_frames, fire_frames, Weapon_WarHammer_Fire);
+}
+void Weapon_Rapier_Fire(edict_t *ent)
+{
+	int damage;
+	int kick;
+	int range;
+
+	damage = RAPIER_NORMAL_DAMAGE;
+	kick = RAPIER_KICK;
+	range = RAPIER_RANGE;
+
+	melee_attack (ent, vec3_origin, damage, kick ,range);
+	ent->client->ps.gunframe++;
+}
+void Weapon_Rapier(edict_t *ent)
+{
+	static int	pause_frames[]	= {0};
+	static int	fire_frames[]	= {6, 7, 8, 9, 10, 11, 0};
+
+	Weapon_Generic (ent, 5, 20, 49, 53, pause_frames, fire_frames, Weapon_Rapier_Fire);
+}
+
+void Weapon_MorningStar_Fire(edict_t *ent)
+{
+	int damage;
+	int kick;
+	int range;
+
+	damage = MSTAR_NORMAL_DAMAGE;
+	kick = MSTAR_KICK;
+	range = MSTAR_RANGE;
+
+	melee_attack (ent, vec3_origin, damage, kick ,range);
+	ent->client->ps.gunframe++;
+}
+void Weapon_MorningStar(edict_t *ent)
+{
+	static int	pause_frames[]	= {29, 42, 57, 0};
+	static int	fire_frames[]	= {7, 0};
+
+	Weapon_Generic (ent, 6, 17, 57, 61, pause_frames, fire_frames, Weapon_MorningStar_Fire);
+}
+
+void Weapon_Halberd_Fire(edict_t *ent)
+{
+	int damage;
+	int kick;
+	int range;
+
+	damage = HALBERD_NORMAL_DAMAGE;
+	kick = HALBERD_KICK;
+	range = HALBERD_RANGE;
+
+	melee_attack (ent, vec3_origin, damage, kick ,range);
+	ent->client->ps.gunframe++;
+}
+void Weapon_Halberd(edict_t *ent)
+{
+	static int	pause_frames[]	= {25, 33, 42, 50, 0};
+	static int	fire_frames[]	= {5, 0};
+
+	Weapon_Generic (ent, 4, 12, 50, 54, pause_frames, fire_frames, Weapon_Halberd_Fire);
+}
+
+void Weapon_BusterSword_Fire(edict_t *ent)
+{
+	int damage;
+	int kick;
+	int range;
+
+	damage = BSWORD_NORMAL_DAMAGE;
+	kick = BSWORD_KICK;
+	range = BSWORD_RANGE;
+
+	melee_attack (ent, vec3_origin, damage, kick ,range);
+	ent->client->ps.gunframe++;
+}
+void Weapon_BusterSword(edict_t *ent)
+{
+	static int	pause_frames[]	= {39, 45, 50, 55, 0};
+	static int	fire_frames[]	= {9, 17, 0};
+
+	Weapon_Generic (ent, 8, 32, 55, 58, pause_frames, fire_frames, Weapon_BusterSword_Fire);
+}
+
+
+

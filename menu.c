@@ -16,7 +16,7 @@ void addLineToMenu(edict_t *ent, char *line, int option)
 	ent->client->menustorage.numLines++;
 	
 	ent->client->menustorage.messages[ent->client->menustorage.numLines].msg = malloc(22);
-	sprintf (ent->client->menustorage.messages[ent->client->menustorage.numLines].msg, "%-21s", line);
+	sprintf(ent->client->menustorage.messages[ent->client->menustorage.numLines].msg, "%-21s", line);
 	ent->client->menustorage.messages[ent->client->menustorage.numLines].option=option;
 }
 
@@ -38,9 +38,9 @@ void clearMenu(edict_t *ent)
 	ent->client->menustorage.numLines = 0;
 }
 
-void setMenuHandler (edict_t *ent, void (*optionSelected)(edict_t *ent, int option))
+void setMenuHandler (edict_t *ent, qboolean (*optionSelected)(edict_t *ent, int option))
 {
-	ent->client->menustorage.optionSelected=optionSelected;
+	ent->client->menustorage.optionSelected = optionSelected;
 }
 
 void menuDown(edict_t *ent)
@@ -77,7 +77,7 @@ void menuUp(edict_t *ent)
 			ent->client->menustorage.currentLine--;
 		else
 		{
-			while((ent->client->menustorage.messages[i].option==0) | i < ent->client->menustorage.numLines)
+			while((ent->client->menustorage.messages[i].option==0) | (i < ent->client->menustorage.numLines))
 				{i--;}
 			ent->client->menustorage.currentLine =  i;
 		}
@@ -88,14 +88,7 @@ void menuUp(edict_t *ent)
 
 void menuSelect (edict_t *ent)
 {
-	int i;
-
-
-
 	ent->client->menustorage.optionSelected(ent, ent->client->menustorage.messages[ent->client->menustorage.currentLine].option);
-	
-
-
 
 	/*
 	Removed these lines according to the advanced menu tutorial
@@ -123,7 +116,7 @@ void showMenu (edict_t * ent)
 {
 	int i, j;
 	char finalMenu[1024];
-	char tmp[80], tmp2[80];
+	char tmp[80];
 
 
 	sprintf (finalMenu, "xv 32 yv 8 picn inventory ");
@@ -142,9 +135,9 @@ void showMenu (edict_t * ent)
 			sprintf(tmp, "xv 52 yv %i string2 \">> %s <<\" ", j, ent->client->menustorage.messages[i].msg);
 		}
 		else 
-			sprintf(tmp,"xv 52 yv %i string2 \"   %s   \" ",j,ent->client->menustorage.messages[i].msg);
+			sprintf (tmp,"xv 52 yv %i string2 \"   %s   \" ",j,ent->client->menustorage.messages[i].msg);
 
-		strcat(finalMenu, tmp);
+		strcat(finalMenu,tmp);
 		j += 12;
 	}
 
@@ -179,50 +172,103 @@ void ChangeLine (edict_t *ent, int lineNum, char *line, int option)
 	ent->client->menustorage.messages[lineNum].option = option;
 }
 
-void testMenuHandler (edict_t *ent, int option)
+qboolean testMenuHandler (edict_t *ent, int option)
 {
-	char *line;
+	gitem_t *item;
 
+	int cantbuy;
 	
-	gi.centerprintf(ent, "This is your option: %i", option);
-	
-	if(option == 1)
-		ent->health += 5;
+
+	int prices[8] = {10, 20, 30, 35, 40 , 45, 60, 80};
+
+	cantbuy = 1;
+
+	//price = ent->client->menustorage.prices;
 
 	switch(option)
 	{
 	case 1:
-		ent->health += 5;
+		{
+			
+			if(ent->client->gold >= prices[0])
+			{
+				ent->client->gold -= prices[0];
+				item = FindItem("Sword");
+				ent->client->pers.inventory[ITEM_INDEX(item)] = 2;
+				cantbuy = 0;
+			}
+		}
 		break;
 	case 2: 
-		ent->health -= 5;
+		{
+			if(ent->client->gold >= prices[1])
+			{
+				ent->client->gold -= prices[1];
+				item = FindItem("Axe");
+				ent->client->pers.inventory[ITEM_INDEX(item)] = 3;
+				cantbuy = 0;
+			}
+		}
 		break;
 	case 3:
+	{
+		if(ent->client->gold >= prices[2])
+		{
+			ent->client->gold -= prices[2];
+			item = FindItem("Lance");
+			ent->client->pers.inventory[ITEM_INDEX(item)] = 4;
+			cantbuy = 0;
+		}
+	}
+	break;
+	case 4: 
+	if(ent->client->gold >= prices[3])
+	{
+		ent->client->gold -= prices[3];
+		item = FindItem("WarHammer");
+		ent->client->pers.inventory[ITEM_INDEX(item)] = 5;
+		cantbuy = 0;
+	}
+	case 9:
 		closeMenu(ent);
-		return;
+		cantbuy = 2;
 		break;
 	}
+
+	if(cantbuy == 1)
+	{
+		closeMenu(ent);
+		gi.centerprintf(ent, "Come back when you're not poor");
+	}
+	else if (cantbuy == 0)
+	{
+		gi.centerprintf(ent, "You got a %s", item->pickup_name);
+	}
+
+
+	return true;
 }
 
 
-void Menu_test(edict_t *ent)
+extern void Menu_test(edict_t *ent)
 {
-	char *line;
-
 
 	if(ent->client->showscores || ent->client->showinventory || ent->client->menustorage.menu_active)
 		return;
 
-	sprintf(line,"%d",ent->health);
+
+
 
 	clearMenu(ent);
-	addLineToMenu(ent, "This is a test menu", 0);
-	addLineToMenu(ent, "For adding health", 0);
+	addLineToMenu(ent, "Welcome traveler", 0);
+	addLineToMenu(ent, "What are ya buy'n?", 0);
 	
-	addLineToMenu(ent, "Health + 5", 1);
-	addLineToMenu(ent, line, 0);
-	addLineToMenu(ent, "Health - 5", 2);
-	addLineToMenu(ent, "Exit", 3);
+	addLineToMenu(ent, "Buy Sword: 10g", 1);
+	/*addLineToMenu(ent, line, 0);*/
+	addLineToMenu(ent, "Buy Axe: 20g", 2);
+	addLineToMenu(ent, "Buy Lance: 30g", 3);
+	addLineToMenu(ent, "Buy Warhammer: 50g", 4);
+	addLineToMenu(ent, "Exit",5 );
 	
 	setMenuHandler (ent, testMenuHandler);
 	ent->client->menustorage.currentLine = 3;

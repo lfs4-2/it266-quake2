@@ -22,6 +22,12 @@ Custom Melee Weapons
 void Weapon_Sword (edict_t *ent);
 void Weapon_Axe (edict_t *ent);
 void Weapon_Lance(edict_t *ent);
+void Weapon_Knife (edict_t *ent);
+void Weapon_WarHammer(edict_t *ent);
+void Weapon_Halberd (edict_t *ent);
+void Weapon_Rapier (edict_t *ent);
+void Weapon_MorningStar (edict_t *ent);
+void Weapon_BusterSword (edict_t *ent);
 
 gitem_armor_t jacketarmor_info	= { 25,  50, .30, .00, ARMOR_JACKET};
 gitem_armor_t combatarmor_info	= { 50, 100, .60, .30, ARMOR_COMBAT};
@@ -591,9 +597,9 @@ int ArmorIndex (edict_t *ent)
 	return 0;
 }
 
-void PickupGold(edict_t *ent)
+void PickupGold(edict_t *ent, int goldValue)
 {
-	ent->client->gold += 10;
+	ent->client->gold += goldValue;
 	gi.centerprintf(ent, "Current Gold: %i", ent->client->gold);
 }
 
@@ -605,6 +611,10 @@ qboolean Pickup_Armor (edict_t *ent, edict_t *other)
 	int				newcount;
 	float			salvage;
 	int				salvagecount;
+
+	int				goldAmount;
+
+	goldAmount = 10;
 
 	// get info on new armor
 	newinfo = (gitem_armor_t *)ent->item->info;
@@ -673,7 +683,7 @@ qboolean Pickup_Armor (edict_t *ent, edict_t *other)
 	if (!(ent->spawnflags & DROPPED_ITEM) && (deathmatch->value))
 		SetRespawn (ent, 20);
 
-	PickupGold(other);
+	PickupGold(other, goldAmount);
 
 	return true;
 }
@@ -1539,6 +1549,31 @@ always owned, never in the world
 	/* weapon_sword
 	always owned, never in the world
 	*/
+	/*weaponKnife*/
+
+	{
+		"weapon_knife",
+		NULL, 
+		Use_Weapon,			//How to use
+		NULL,
+		Weapon_Knife,		//What the function is
+		"misc/w_pkup.wav",
+		NULL,
+		0,
+		"models/weapons/v_blast/tris.md2",//The models stuff
+		"w_blaster",						//Icon to be used
+		"Knife",							//Pickup name
+		0,									// count_width
+		0,									//quantity
+		NULL,
+		IT_WEAPON,
+		0,
+		NULL,
+		0,
+		"weapons/hgrenlb1b.wav misc/fhit3.wav"	//The sound of the blaster
+												//This is precached
+	},
+
 	{
 		"weapon_sword",
 		NULL, 
@@ -1548,13 +1583,14 @@ always owned, never in the world
 		"misc/w_pkup.wav",
 		NULL,
 		0,
-		"models/weapons/blaster/tris.md2",  //The models stuff
+		"models/weapons/v_blast/tris.md2",  //The models stuff
 		"w_blaster",						//Icon to be used
 		"Sword",							//Pickup name
-		0,
-		0,
+		0,									// count_width
+		0,									//quantity
 		NULL,
 		IT_WEAPON,
+		0,
 		NULL,
 		0,
 		"weapons/hgrenlb1b.wav misc/fhit3.wav"	//The sound of the blaster
@@ -1572,13 +1608,14 @@ always owned, never in the world
 		"misc/wpkup.wav",
 		NULL,
 		0,
-		"models/weapons/balster/tris.md2",
+		"models/weapons/v_shotg/tris.md2",
 		"w_blaster",
 		"Axe",
 		0,
 		0,
 		NULL,
 		IT_WEAPON,
+		0,
 		NULL,
 		0,
 		"weapons/hgrenlb1b.wav misc/fhit3.wav"
@@ -1595,18 +1632,133 @@ always owned, never in the world
 		"misc/wpkup.wav",
 		NULL,
 		0,
-		"models/weapons/balster/tris.md2",
+		"models/weapons/v_rail/tris.md2",
 		"w_blaster",
 		"Lance",
 		0,
 		0,
 		NULL,
 		IT_WEAPON,
+		0,
 		NULL,
 		0,
 		"weapons/hgrenlb1b.wav misc/fhit3.wav"
 	},
+	
+	{
+		"weapon_warhammer",
+		NULL, 
+		Use_Weapon,			//How to use
+		NULL,
+		Weapon_WarHammer,		//What the function is
+		"misc/w_pkup.wav",
+		NULL,
+		0,
+		"models/weapons/v_launch/tris.md2",  //The models stuff
+		"w_blaster",						//Icon to be used
+		"WarHammer",							//Pickup name
+		0,									// fcount_width
+		0,									//quantity
+		NULL,
+		IT_WEAPON,
+		0,
+		NULL,
+		0,
+		"weapons/hgrenlb1b.wav misc/fhit3.wav"	//The sound of the blaster
+												//This is precached
+	},
+	
+	{
+		"weapon_halberd",
+		NULL, 
+		Use_Weapon,			//How to use
+		NULL,
+		Weapon_Halberd,		//What the function is
+		"misc/w_pkup.wav",
+		NULL,
+		0,
+		"models/weapons/v_rocket/tris.md2",  //The models stuff
+		"w_blaster",						//Icon to be used
+		"Halberd",							//Pickup name
+		0,									// count_width
+		0,									//quantity
+		NULL,
+		IT_WEAPON,
+		0,
+		NULL,
+		0,
+		"weapons/hgrenlb1b.wav misc/fhit3.wav"	//The sound of the blaster
+												//This is precached
+	},
 
+	{
+		"weapon_rapier",
+		NULL, 
+		Use_Weapon,			//How to use
+		NULL,
+		Weapon_Rapier,		//What the function is
+		"misc/w_pkup.wav",
+		NULL,
+		0,
+		"models/weapons/v_hyperb/tris.md2",  //The models stuff
+		"w_blaster",						//Icon to be used
+		"Rapier",							//Pickup name
+		0,									// count_width
+		0,									//quantity
+		NULL,
+		IT_WEAPON,
+		0,
+		NULL,
+		0,
+		"weapons/hgrenlb1b.wav misc/fhit3.wav"	//The sound of the blaster
+												//This is precached
+	},
+
+		{
+		"weapon_morningstar",
+		NULL, 
+		Use_Weapon,			//How to use
+		NULL,
+		Weapon_MorningStar,		//What the function is
+		"misc/w_pkup.wav",
+		NULL,
+		0,
+		"models/weapons/v_shotg2/tris.md2",  //The models stuff
+		"w_blaster",						//Icon to be used
+		"MorningStar",							//Pickup name
+		0,									// count_width
+		0,									//quantity
+		NULL,
+		IT_WEAPON,
+		0,
+		NULL,
+		0,
+		"weapons/hgrenlb1b.wav misc/fhit3.wav"	//The sound of the blaster
+												//This is precached
+	},
+
+		{
+		"weapon_busterSword",
+		NULL, 
+		Use_Weapon,			//How to use
+		NULL,
+		Weapon_BusterSword,		//What the function is
+		"misc/w_pkup.wav",
+		NULL,
+		0,
+		"models/weapons/v_bfg/tris.md2",  //The models stuff
+		"w_blaster",						//Icon to be used
+		"BusterSword",							//Pickup name
+		0,									// count_width
+		0,									//quantity
+		NULL,
+		IT_WEAPON,
+		0,
+		NULL,
+		0,
+		"weapons/hgrenlb1b.wav misc/fhit3.wav"	//The sound of the blaster
+												//This is precached
+	},
 	//
 	// AMMO ITEMS
 	//
