@@ -136,9 +136,24 @@ void CMD_Interact (edict_t *ent)
 		
 }
 
-void CMD_Fire_Spell(edict_t *ent)
+void CMD_Change_Spell(edict_t *ent)
 {
+	int		currSpell;
+	char	*spells[SPELL_MAX];
 
+	spells[0] = "Force Push";
+	spells[1] = "Force Pull";
+	spells[2] = "Heal";
+
+	
+	ent->client->spellNum++;
+
+	if(ent->client->spellNum > SPELL_MAX)
+		ent->client->spellNum = 0;
+
+	ent->client->spellName = spells[ent->client->spellNum];
+
+	gi.centerprintf(ent, "Current Spell: %s", ent->client->spellName);
 }
 
 void SelectPrevItem (edict_t *ent, int itflags)
@@ -1060,7 +1075,7 @@ void ClientCommand (edict_t *ent)
 	else if(Q_stricmp (cmd, "menu") == 0)
 		CMD_Interact(ent);
 	else if(Q_stricmp (cmd, "spell") == 0)
-		CMD_Fire_Spell(ent);
+		CMD_Change_Spell(ent);
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }
