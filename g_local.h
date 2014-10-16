@@ -63,7 +63,7 @@
 
 #define BODY_QUEUE_SIZE		8
 
-#define SPELL_MAX 2
+#define SPELL_MAX 5
 
 typedef enum
 {
@@ -952,6 +952,8 @@ struct gclient_s
 	float		think_delay;
 
 	int			gold;
+	qboolean	quad_damage;
+	int			buffTimer;
 	int			spellNum;
 	char		*spellName;
 

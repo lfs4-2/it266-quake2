@@ -12,7 +12,7 @@ Some comments are from tutorial
 
 #define KNIFE_NORMAL_DAMAGE 4
 #define KNIFE_KICK 0
-#define KNIFE_RANGE 100
+#define KNIFE_RANGE 10
 
 /*sword variable definitions*/
 
@@ -139,7 +139,10 @@ void melee_attack(edict_t *ent, vec3_t g_offset, int damage, int kick, int range
 	VectorScale (forward, -2, ent->client->kick_origin);
 	ent->client->kick_angles[0] = -1;
 
-	fire_melee (ent, start, forward, damage, -100,range);
+	if(ent->client->quad_damage)
+		damage *= 4;
+
+	fire_melee (ent, start, forward, damage,kick,range);
 
 }
 
@@ -160,9 +163,32 @@ void fire_spell(edict_t *ent, vec3_t g_offset, int spell)
 	VectorScale (forward, -2, ent->client->kick_origin);
 	ent->client->kick_angles[0] = -1;
 
-	fire_shotgun (ent, start, forward, 0, -100, 500, 500, DEFAULT_DEATHMATCH_SHOTGUN_COUNT, MOD_SHOTGUN);
-
-	//fire_bfg (ent, start, forward, 200, 400, 20);
+	if(spell == 0) /*force push*/
+	{
+		fire_shotgun (ent, start, forward, 0, 100, 500, 500, DEFAULT_DEATHMATCH_SHOTGUN_COUNT, MOD_SHOTGUN);
+	}
+	else if(spell == 1) /*grapple beam*/
+	{
+		fire_shotgun (ent, start, forward, 0, -100, 500, 500, DEFAULT_DEATHMATCH_SHOTGUN_COUNT, MOD_SHOTGUN);
+		fire_rail (ent, start, forward, 0, 0);
+	}
+	else if(spell == 2) /*heal*/
+	{
+		ent->health += 10;
+	}
+	else if(spell == 3) /*bfg (safety dance)*/
+	{
+		fire_bfg (ent, start, forward, 300, 400, 25);
+	}
+	else if(spell == 4) /*double damage*/
+	{
+		ent->client->quad_damage = true;
+		ent->client->buffTimer = 1000;
+	}
+	else if(spell == 5) /*drain soul*/
+	{
+		
+	}
 
 }
 
@@ -368,7 +394,7 @@ void Weapon_BusterSword(edict_t *ent)
 
 void Weapon_SpellBook_Fire(edict_t *ent)
 {
-	fire_spell(ent, vec3_origin, 0);
+	fire_spell(ent, vec3_origin, ent->client->spellNum);
 	ent->client->ps.gunframe++;
 }
 void Weapon_SpellBook(edict_t *ent)

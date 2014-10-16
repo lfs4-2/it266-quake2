@@ -142,8 +142,11 @@ void CMD_Change_Spell(edict_t *ent)
 	char	*spells[SPELL_MAX];
 
 	spells[0] = "Force Push";
-	spells[1] = "Force Pull";
+	spells[1] = "Grapple Beam";
 	spells[2] = "Heal";
+	spells[3] = "BFG";
+	spells[4] = "Quad Damage";
+	spells[5] = "Drain Soul";
 
 	
 	ent->client->spellNum++;

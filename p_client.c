@@ -1591,6 +1591,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	int		i, j;
 	pmove_t	pm;
 
+
 	level.current_entity = ent;
 	client = ent->client;
 
@@ -1759,6 +1760,18 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			UpdateChaseCam(other);
 	}
 
+	
+	if(client->quad_damage)
+	{
+		if(client->buffTimer > 0)
+		{
+			client->buffTimer--;
+			//gi.centerprintf(ent, "Quad Timer: %i", client->buffTimer);
+		}
+		else 
+			client->quad_damage = false;
+	}
+	
 	if(client->think_delay <= 0)
 	{
 		client->think_delay = 60;
