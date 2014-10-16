@@ -1766,7 +1766,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		if(client->buffTimer > 0)
 		{
 			client->buffTimer--;
-			//gi.centerprintf(ent, "Quad Timer: %i", client->buffTimer);
+			gi.centerprintf(ent, "Quad Timer: %i", client->buffTimer);
 		}
 		else 
 			client->quad_damage = false;
