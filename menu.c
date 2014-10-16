@@ -181,7 +181,7 @@ qboolean testMenuHandler (edict_t *ent, int option)
 
 	int prices2[8] = {10, 20, 30, 35, 40 , 45, 60, 80};
 
-	int prices[8] = {0, 0, 0, 0, 0 , 0, 0, 0};
+	int prices[8] = {10, 20, 40, 50, 70 , 80, 90, 120};
 
 	cantbuy = 1;
 
@@ -304,9 +304,6 @@ extern void Menu_test(edict_t *ent)
 	if(ent->client->showscores || ent->client->showinventory || ent->client->menustorage.menu_active)
 		return;
 
-
-
-
 	clearMenu(ent);
 	addLineToMenu(ent, "Welcome traveler", 0);
 	addLineToMenu(ent, "What are ya buy'n?", 0);
@@ -314,12 +311,12 @@ extern void Menu_test(edict_t *ent)
 	addLineToMenu(ent, "Buy Sword: 10g", 1);
 	/*addLineToMenu(ent, line, 0);*/
 	addLineToMenu(ent, "Buy Axe: 20g", 2);
-	addLineToMenu(ent, "Buy Lance: 30g", 3);
+	addLineToMenu(ent, "Buy Lance: 40g", 3);
 	addLineToMenu(ent, "Buy Warhammer: 50g", 4);
-	addLineToMenu(ent, "Buy Halberd: 50g", 5);
-	addLineToMenu(ent, "Buy Rapier: 50g", 6);
-	addLineToMenu(ent, "Buy MorningStar: 60g", 7);
-	addLineToMenu(ent, "Buy BusterSword: 50g", 8);
+	addLineToMenu(ent, "Buy Halberd: 70g", 5);
+	addLineToMenu(ent, "Buy Rapier: 80g", 6);
+	addLineToMenu(ent, "Buy MorningStar: 90g", 7);
+	addLineToMenu(ent, "Buy BusterSword: 120g", 8);
 	addLineToMenu(ent, "Exit",9 );
 	
 	setMenuHandler (ent, testMenuHandler);
