@@ -368,6 +368,31 @@ void infantry_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int dam
 {
 	int		n;
 
+
+	/*
+	=========================
+	Gold Drops
+	*/
+
+	edict_t	*gold;
+
+	gold = G_Spawn();
+
+	if(gold != NULL)
+	{	
+		VectorCopy(self->s.origin, gold->s.origin);
+		gold->s.origin[2] += 10;
+
+		SpawnItem(gold, FindItem("Armor Shard"));
+		
+		gi.linkentity(gold);
+	}
+
+	/*
+	=================
+	End gold drop code
+	*/
+
 // check for gib
 	if (self->health <= self->gib_health)
 	{

@@ -951,7 +951,10 @@ struct gclient_s
 
 	float		think_delay;
 
+	/*my custom variables*/
 	int			gold;
+	int			mana;
+	int			manaTimer;
 	qboolean	quad_damage;
 	int			buffTimer;
 	int			spellNum;

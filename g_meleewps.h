@@ -165,58 +165,83 @@ void fire_spell(edict_t *ent, vec3_t g_offset, int spell)
 
 	if(spell == 0) /*force push*/
 	{
-		fire_shotgun (ent, start, forward, 0, 100, 500, 500, DEFAULT_DEATHMATCH_SHOTGUN_COUNT, MOD_SHOTGUN);
+		if(ent->client->mana >= 10)
+		{
+			fire_shotgun (ent, start, forward, 0, 100, 500, 500, DEFAULT_DEATHMATCH_SHOTGUN_COUNT, MOD_SHOTGUN);
+			ent->client->mana -= 10;
+		}
 	}
 	else if(spell == 1) /*grapple beam*/
 	{
-		fire_shotgun (ent, start, forward, 0, -100, 500, 500, DEFAULT_DEATHMATCH_SHOTGUN_COUNT, MOD_SHOTGUN);
-		fire_rail (ent, start, forward, 0, 0);
+		if(ent->client->mana >= 20)
+		{
+			fire_shotgun (ent, start, forward, 0, -100, 500, 500, DEFAULT_DEATHMATCH_SHOTGUN_COUNT, MOD_SHOTGUN);
+			fire_rail (ent, start, forward, 0, 0);
+			ent->client->mana -= 20;
+		}
 	}
 	else if(spell == 2) /*heal*/
 	{
-		ent->health += 10;
+		if(ent->client->mana >= 20)
+		{
+			ent->health += 10;
+			ent->client->mana -= 20;
+		}
 	}
 	else if(spell == 3) /*bfg (safety dance)*/
 	{
-		fire_bfg (ent, start, forward, 300, 400, 25);
+		if(ent->client->mana >= 100)
+		{
+			fire_bfg (ent, start, forward, 300, 400, 25);
+			ent->client->mana -= 100;
+		}
 	}
 	else if(spell == 4) /*double damage*/
 	{
-		ent->client->quad_damage = true;
-		ent->client->buffTimer = 1000;
+		if(ent->client->mana >= 50)
+		{
+			ent->client->quad_damage = true;
+			ent->client->buffTimer = 1000;
+			ent->client->mana -= 50;
+		}
 	}
 	else if(spell == 5) /*drain soul*/
 	{
-		trace_t tr;
- 
-		vec3_t end;
-
-		VectorMA (start, 100, forward, end);                 
- 
-		tr = gi.trace (ent->s.origin, NULL, NULL, end, ent, MASK_SHOT);
-
-		if (!((tr.surface) && (tr.surface->flags & SURF_SKY)))    
+		if(ent->client->mana >= 40)
 		{
-			if (tr.fraction < 1.0)        
-			{  
+			trace_t tr;
+ 
+			vec3_t end;
 
-				if (tr.ent->takedamage)            
-				{
-					T_Damage (tr.ent, ent, ent, forward, tr.endpos, tr.plane.normal, 200, 0, 0,0);
-					ent->health += 30;
-					//gi.sound (ent, CHAN_AUTO, gi.soundindex("misc/fhit3.wav") , 1, ATTN_NORM, 0); 
-				}        
-				else        
-				{                
-					gi.WriteByte (svc_temp_entity);    
-					gi.WriteByte (TE_SPARKS);
-					gi.WritePosition (tr.endpos);    
-					gi.WriteDir (tr.plane.normal);
-					gi.multicast (tr.endpos, MULTICAST_PVS);
+			VectorMA (start, 100, forward, end);                 
  
-					//gi.sound (ent, CHAN_AUTO, gi.soundindex("weapons/grenlb1b.wav") , 1, ATTN_NORM, 0);
+			tr = gi.trace (ent->s.origin, NULL, NULL, end, ent, MASK_SHOT);
+
+			ent->client->mana -= 40;
+
+			if (!((tr.surface) && (tr.surface->flags & SURF_SKY)))    
+			{
+				if (tr.fraction < 1.0)        
+				{  
+
+					if (tr.ent->takedamage)            
+					{
+						T_Damage (tr.ent, ent, ent, forward, tr.endpos, tr.plane.normal, 200, 0, 0,0);
+						ent->health += 30;
+						//gi.sound (ent, CHAN_AUTO, gi.soundindex("misc/fhit3.wav") , 1, ATTN_NORM, 0); 
+					}        
+					else        
+					{                
+						gi.WriteByte (svc_temp_entity);    
+						gi.WriteByte (TE_SPARKS);
+						gi.WritePosition (tr.endpos);    
+						gi.WriteDir (tr.plane.normal);
+						gi.multicast (tr.endpos, MULTICAST_PVS);
  
-				}    
+						//gi.sound (ent, CHAN_AUTO, gi.soundindex("weapons/grenlb1b.wav") , 1, ATTN_NORM, 0);
+ 
+					}    
+				}
 			}
 		}
 	}

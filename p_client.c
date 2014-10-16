@@ -1771,6 +1771,20 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		else 
 			client->quad_damage = false;
 	}
+
+	if(client->mana < 100 && !client->quad_damage)
+	{
+		if(client->manaTimer > 0)
+		{
+			client->manaTimer--;
+		}
+		else 
+		{
+			client->mana += 1;
+			client->manaTimer = 15;
+			gi.centerprintf(ent, "Mana: %i", client->mana);
+		}
+	}
 	
 	if(client->think_delay <= 0)
 	{
