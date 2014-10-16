@@ -187,7 +187,38 @@ void fire_spell(edict_t *ent, vec3_t g_offset, int spell)
 	}
 	else if(spell == 5) /*drain soul*/
 	{
-		
+		trace_t tr;
+ 
+		vec3_t end;
+
+		VectorMA (start, 100, forward, end);                 
+ 
+		tr = gi.trace (ent->s.origin, NULL, NULL, end, ent, MASK_SHOT);
+
+		if (!((tr.surface) && (tr.surface->flags & SURF_SKY)))    
+		{
+			if (tr.fraction < 1.0)        
+			{  
+
+				if (tr.ent->takedamage)            
+				{
+					T_Damage (tr.ent, ent, ent, forward, tr.endpos, tr.plane.normal, 200, 0, 0,0);
+					ent->health += 30;
+					//gi.sound (ent, CHAN_AUTO, gi.soundindex("misc/fhit3.wav") , 1, ATTN_NORM, 0); 
+				}        
+				else        
+				{                
+					gi.WriteByte (svc_temp_entity);    
+					gi.WriteByte (TE_SPARKS);
+					gi.WritePosition (tr.endpos);    
+					gi.WriteDir (tr.plane.normal);
+					gi.multicast (tr.endpos, MULTICAST_PVS);
+ 
+					//gi.sound (ent, CHAN_AUTO, gi.soundindex("weapons/grenlb1b.wav") , 1, ATTN_NORM, 0);
+ 
+				}    
+			}
+		}
 	}
 
 }
