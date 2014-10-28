@@ -175,7 +175,8 @@ void fire_spell(edict_t *ent, vec3_t g_offset, int spell)
 	{
 		if(ent->client->mana >= 20) //cm243 The grapple beam feels a little inaccurate to me. I'm not sure if there's a more reliable way to do it, but it feels hard to aim and still hit them
 		{
-			fire_shotgun (ent, start, forward, 0, -100, 500, 500, DEFAULT_DEATHMATCH_SHOTGUN_COUNT, MOD_SHOTGUN);
+			fire_shotgun (ent, start, forward, 0, -100, 50, 50, DEFAULT_DEATHMATCH_SHOTGUN_COUNT, MOD_SHOTGUN);
+			//lfs4  Changed the spread of the grapple beam from 500 to 50, this will make it more accurate
 			fire_rail (ent, start, forward, 0, 0);
 			ent->client->mana -= 20;
 		}

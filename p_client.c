@@ -614,7 +614,8 @@ void InitClientPersistant (gclient_t *client)
 	item = FindItem("Blaster");
 	//client->pers.inventory[client->pers.selected_item] = 1;
 	client->pers.inventory[ITEM_INDEX(item)] = 11;				//cm243 The fact that the blaster is still in the game confused me at first. If there is a way to remove it, that would be nice.
-
+																//lfs4 The blaster was still in the inventory because Quake assumes the player will always have it, otherwise some stuff breaks.
+																// I left it in but removed the ability to use it.
 	/*
 	item = FindItem("Lance");
 	client->pers.inventory[ITEM_INDEX(item)] = 4;
